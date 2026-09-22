@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lab1</title>
+  <style>
+    header {
+      font-family: sans-serif;
+      color: hotpink;
+      font-size: 18px;
+    }
+    form{
+      color: hotpink;
+      font-size:18px;
+    }
+    .graph-and-form {
+      display: flex;
+      gap: 30px;
+    }
+    form > label {
+      display: block;
+    }
+    input,
+    select,
+    button {
+      margin:1%;
+      padding:1%;
+    }
+    .error {
+      color:red;
+    }
+    .error::before {
+      content: "Ошибка: ";
+    }
+    th,
+    td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    button {
+      background-color: lightpink;
+    }
+    .check {
+      background-color: hotpink;
+    }
+    #x {
+      background-color: lightpink;
+    }
+    canvas {
+      border: 1px solid hotpink;
+      background-color: white;
+    }
+    .r-button.selected {
+      background-color: hotpink;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Лабораторная работа №1</h1>
+    <p>Огренич Екатерина</p>
+    <p>Группа: Р3215</p>
+    <p>Вариант 12730</p>
+  </header>
+  <main>
+    <div class="graph-and-form">
+      <canvas id="graph" width="400" height="400"></canvas>
+      <form id="points">
+        <label for="y">Координата -5 < Y < 3:</label>
+        <input type="text" id="y">
+
+        <label for="x">Координата Х:</label>
+        <select id="x">
+          <option>-3</option>
+          <option>-2</option> 
+          <option>-1</option> 
+          <option>0</option> 
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option> 
+        </select>
+        
+        <p>Радиус R:</p>
+        <button type="button" class="r-button" value="1">1</button>
+        <button type="button" class="r-button" value="2">2</button>
+        <button type="button" class="r-button" value="3">3</button>
+        <button type="button" class="r-button" value="4">4</button>
+        <button type="button" class="r-button" value="5">5</button>
+        <button type="submit" class="check">Проверить</button>
+
+        <p id="error" class="error" hidden>Неверное значение</p>
+      </form>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>X</th>
+          <th>Y</th>
+          <th>R</th>
+          <th>Результат</th>
+          <th>Дата и время</th>
+        </tr>
+      </thead>
+      <tbody id="result">
+      </tbody>
+    </table>
+  </main>
+  <script src="decimal.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
