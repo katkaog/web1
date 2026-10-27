@@ -187,7 +187,7 @@ canvas.addEventListener("wheel", function(event) {
     graphScale = graphScale - 10;
   }
 
-  graphScale = Math.max(30, Math.min(180, graphScale));
+  graphScale = Math.max(basePixelsUnit, Math.min(basePixelsUnit * 5, graphScale));
 
   redrawCanvas();
 }, { passive: false });
@@ -214,14 +214,12 @@ canvas.addEventListener("click", function(event) {
   let relativeX;
   let relativeY;
   let radiusForCheck;
-  let rWasSelected;
 
   if (R === null) {
     clickedX = (canvasX - centerX) / basePixelsUnit;
     clickedY = (centerY - canvasY) / basePixelsUnit;
 
     radiusForCheck = graphScale / basePixelsUnit;
-    rWasSelected = false;
     movesWithGraph = false;
     relativeX = null;
     relativeY = null;
@@ -232,7 +230,6 @@ canvas.addEventListener("click", function(event) {
     clickedY = (centerY - canvasY) / pixelsUnit;
 
     radiusForCheck = R;
-    rWasSelected = true;
     movesWithGraph = true;
     relativeX = (canvasX - centerX) / graphScale;
     relativeY = (centerY - canvasY) / graphScale;
@@ -241,12 +238,11 @@ canvas.addEventListener("click", function(event) {
   let hit = checkCanvasHit(canvasX, canvasY);
 
   let pointResult = {
-    x: clickedX.toString(),
-    y: clickedY.toString(),
+    x: clickedX,
+    y: clickedY,
     r: radiusForCheck,
     hit: hit,
     timestamp: Date.now(),
-    rWasSelected: rWasSelected,
     movesWithGraph: movesWithGraph,
     relativeX: relativeX,
     relativeY: relativeY,
@@ -303,13 +299,7 @@ form.addEventListener("submit", function(event) {
           errorMessage.textContent = "Выберите R";
           errorMessage.hidden = false;
         } else {
-          let decimalX = new Decimal(x);
-          let decimalR = new Decimal(R);
-          let halfR = decimalR.div(2);
-          let inCircle = decimalX.gte(0) && y.gte(0) && decimalX.pow(2).plus(y.pow(2)).lte(halfR.pow(2));
-          let inSquare = decimalX.gte(0) && decimalX.lte(halfR) && y.lte(0) && y.gte(decimalR.neg());
-          let inTriangle = decimalX.lte(0) && decimalX.gte(decimalR.neg()) && y.lte(0) && y.gte(halfR.neg()) && y.gte(decimalX.plus(decimalR).neg().div(2));
-          let hit = inCircle || inSquare || inTriangle;
+          let hit = checkHit(x, normalizedY, R);
           let timestamp = Date.now();
           
           let pointResult = {
@@ -318,7 +308,6 @@ form.addEventListener("submit", function(event) {
             r: R,
             hit: hit,
             timestamp: timestamp,
-            rWasSelected: true,
             movesWithGraph: true,
             relativeX: Number(x) / R,
             relativeY: Number(normalizedY) / R
